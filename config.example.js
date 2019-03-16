@@ -4,5 +4,6 @@ module.exports = {
 	PASS: '',
 	ROOM_ID: 'room:matrix.org',
 	LOCAL_PORT: 8080,
-	INIT_SYNC_LIMIT: 1000
+	INIT_SYNC_LIMIT: 1000,
+	ASC_ORDER: true
 }

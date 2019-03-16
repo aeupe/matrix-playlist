@@ -44,7 +44,8 @@ client.login(
 
 	client.on('Room.timeline', (event, room, toStartOfTimeline) => {
 		if ( eventFilter(event) && ( id = getId(event) ) ) {
-			ids.push(id)
+			if ( config.ASC_ORDER ) ids.push(id)
+			else ids.unshift(id)
 			console.log(`${new Date().toString()} ${id}`)
 		}
 	})
