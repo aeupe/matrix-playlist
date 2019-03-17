@@ -25,7 +25,7 @@ client.login(
 			? obj.id
 			: null
 	},
-	getYouTubeUrl = ids => `https://www.youtube.com/watch_videos?video_ids=${ids.join(',')}`
+	getYouTubeUrl = ids => `https://www.youtube.com/watch_videos?video_ids=${ids.join(',')}`,
 	ids = []
 
 	client.once('sync', (state, prevState, res) => {
