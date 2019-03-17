@@ -1,7 +1,7 @@
 const 	sdk = require('matrix-js-sdk'),
 	urlParser = require('js-video-url-parser'),
 	express = require('express'),
-	config = require('./config')
+	config = require('./config'),
 
 	client = sdk.createClient(config.HOMESERVER),
 	app = express()
