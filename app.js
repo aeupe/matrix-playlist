@@ -1,8 +1,21 @@
 const 	sdk = require('matrix-js-sdk'),
 	urlParser = require('js-video-url-parser'),
-	express = require('express'),
-	config = require('./config'),
+	express = require('express')
 
+let config
+try {
+	config = require('./config')
+} catch (e) {
+	config = {
+		HOMESERVER: process.env.HOMESERVER,
+		USER: process.env.USER,
+		PASS: process.env.PASS,
+		ROOM_ID: process.env.ROOM_ID,
+		LOCAL_POST: parseInt(process.env.LOCAL_PORT),
+		INIT_SYNC_LIMIT: parseInt(process.env.INIT_SYNC_LIMIT),
+		ASC_ORDER: (process.env.ASC_ORDER || '').toLowerCase() === 'true'
+	}
+}
 	client = sdk.createClient(config.HOMESERVER),
 	app = express()
 
