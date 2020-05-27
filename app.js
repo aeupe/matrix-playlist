@@ -16,7 +16,8 @@ try {
 		ASC_ORDER: (process.env.ASC_ORDER || 'true').toLowerCase() === 'true'
 	}
 }
-	client = sdk.createClient(config.HOMESERVER),
+
+const	client = sdk.createClient(config.HOMESERVER),
 	app = express()
 
 console.log('Logging in and starting the client...')
