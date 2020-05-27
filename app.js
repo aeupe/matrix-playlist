@@ -7,13 +7,13 @@ try {
 	config = require('./config')
 } catch (e) {
 	config = {
-		HOMESERVER: process.env.HOMESERVER,
+		HOMESERVER: process.env.HOMESERVER || 'https://matrix.org',
 		USER: process.env.USER,
 		PASS: process.env.PASS,
 		ROOM_ID: process.env.ROOM_ID,
-		LOCAL_POST: parseInt(process.env.LOCAL_PORT),
-		INIT_SYNC_LIMIT: parseInt(process.env.INIT_SYNC_LIMIT),
-		ASC_ORDER: (process.env.ASC_ORDER || '').toLowerCase() === 'true'
+		LOCAL_PORT: parseInt(process.env.LOCAL_PORT || 8080),
+		INIT_SYNC_LIMIT: parseInt(process.env.INIT_SYNC_LIMIT || 1000),
+		ASC_ORDER: (process.env.ASC_ORDER || 'true').toLowerCase() === 'true'
 	}
 }
 	client = sdk.createClient(config.HOMESERVER),
