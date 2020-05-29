@@ -30,17 +30,18 @@ client.login(
 	}
 ).then(res => {
 	
-	const eventFilter = e =>
+	const	isMessageEvent = e =>
 		e.event.type == 'm.room.message' &&
-		e.event.content.body && e.event.content.body.length &&
-		e.event.room_id == config.ROOM_ID,
+		e.event.content.body && e.event.content.body.length,
+	isRedactionEvent = e =>
+		e.event.type == 'm.room.redaction',
 	getId = e => {
 		const obj = urlParser.parse(e.event.content.body)
 		return obj && obj.provider == 'youtube' && obj.id
 			? obj.id
 			: null
 	},
-	getYouTubeUrl = ids => `https://www.youtube.com/watch_videos?video_ids=${ids.join(',')}`,
+	getYouTubeUrl = ids => `https://www.youtube.com/watch_videos?video_ids=${ids.map(id => id.id).join(',')}`,
 	ids = []
 
 	client.once('sync', (state, prevState, res) => {
@@ -61,10 +62,19 @@ client.login(
 	})
 
 	client.on('Room.timeline', (event, room, toStartOfTimeline) => {
-		if ( eventFilter(event) && ( id = getId(event) ) ) {
-			if ( config.ASC_ORDER ) ids.push(id)
-			else ids.unshift(id)
-			console.log(`${new Date().toString()} ${id}`)
+		if ( room.roomId === config.ROOM_ID ) {
+			if ( isMessageEvent(event) && ( id = getId(event) ) ) {
+				const eventId = event.event.event_id
+				if ( config.ASC_ORDER ) ids.push({id, eventId})
+				else ids.unshift({id, eventId})
+				console.log(`${new Date().toString()} INSERT ${id}`)
+			} else if ( isRedactionEvent(event) ) {
+				const redactsEventId = event.event.redacts
+				if ( ( i = ids.findIndex(id => id.eventId === redactsEventId ) ) >= 0 ) {
+					console.log(`${new Date().toString()} REDACT ${ids[i].id}`)
+					ids.splice(i, 1)
+				}
+			}
 		}
 	})
 
