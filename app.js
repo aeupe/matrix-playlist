@@ -1,6 +1,7 @@
 const 	sdk = require('matrix-js-sdk'),
 	urlParser = require('js-video-url-parser'),
-	express = require('express')
+	express = require('express'),
+	shuffle = require('lodash.shuffle')
 
 let config
 try {
@@ -49,6 +50,9 @@ client.login(
 				console.log('Initializing Express...')
 				app.get('/', (req, res) => {
 					res.redirect(getYouTubeUrl(ids))
+				})
+				app.get('/shuffle', (req, res) => {
+					res.redirect(getYouTubeUrl(shuffle(ids)))
 				})
 				app.listen(config.LOCAL_PORT, () => {
 					console.log(`Express is listening on port ${config.LOCAL_PORT}`)
